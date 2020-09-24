@@ -1,6 +1,5 @@
-# LBH Base API
+# LBH Electoral Register Resident Information API
 
-Base API is a boilerplate code for being reused for new APIs for LBH
 
 ## Stack
 
