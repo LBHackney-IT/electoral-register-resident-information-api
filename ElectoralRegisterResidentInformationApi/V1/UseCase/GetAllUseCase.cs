@@ -8,8 +8,8 @@ namespace ElectoralRegisterResidentInformationApi.V1.UseCase
     //TODO: Rename class name and interface name to reflect the entity they are representing eg. GetAllClaimantsUseCase
     public class GetAllUseCase : IGetAllUseCase
     {
-        private readonly IElectoralRegisterResidentInformationApiGateway _gateway;
-        public GetAllUseCase(IElectoralRegisterResidentInformationApiGateway gateway)
+        private readonly IElectoralRegisterGateway _gateway;
+        public GetAllUseCase(IElectoralRegisterGateway gateway)
         {
             _gateway = gateway;
         }

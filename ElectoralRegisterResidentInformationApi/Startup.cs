@@ -120,7 +120,7 @@ namespace ElectoralRegisterResidentInformationApi
 
         private static void RegisterGateways(IServiceCollection services)
         {
-            services.AddScoped<IElectoralRegisterResidentInformationApiGateway, ElectoralRegisterResidentInformationApiGateway>();
+            services.AddScoped<IElectoralRegisterGateway, ElectoralRegisterGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)

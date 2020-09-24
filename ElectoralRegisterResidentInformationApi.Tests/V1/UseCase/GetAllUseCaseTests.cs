@@ -13,14 +13,14 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.UseCase
 {
     public class GetAllUseCaseTests
     {
-        private Mock<IElectoralRegisterResidentInformationApiGateway> _mockGateway;
+        private Mock<IElectoralRegisterGateway> _mockGateway;
         private GetAllUseCase _classUnderTest;
         private Fixture _fixture;
 
         [SetUp]
         public void SetUp()
         {
-            _mockGateway = new Mock<IElectoralRegisterResidentInformationApiGateway>();
+            _mockGateway = new Mock<IElectoralRegisterGateway>();
             _classUnderTest = new GetAllUseCase(_mockGateway.Object);
             _fixture = new Fixture();
         }

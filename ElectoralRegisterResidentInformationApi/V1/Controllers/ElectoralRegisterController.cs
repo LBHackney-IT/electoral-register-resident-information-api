@@ -11,11 +11,11 @@ namespace ElectoralRegisterResidentInformationApi.V1.Controllers
     [Produces("application/json")]
     [ApiVersion("1.0")]
     //TODO: rename class to match the API name
-    public class ElectoralRegisterResidentInformationApiController : BaseController
+    public class ElectoralRegisterController : BaseController
     {
         private readonly IGetAllUseCase _getAllUseCase;
         private readonly IGetByIdUseCase _getByIdUseCase;
-        public ElectoralRegisterResidentInformationApiController(IGetAllUseCase getAllUseCase, IGetByIdUseCase getByIdUseCase)
+        public ElectoralRegisterController(IGetAllUseCase getAllUseCase, IGetByIdUseCase getByIdUseCase)
         {
             _getAllUseCase = getAllUseCase;
             _getByIdUseCase = getByIdUseCase;

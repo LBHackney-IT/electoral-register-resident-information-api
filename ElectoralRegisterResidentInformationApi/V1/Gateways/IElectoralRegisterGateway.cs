@@ -3,7 +3,7 @@ using ElectoralRegisterResidentInformationApi.V1.Domain;
 
 namespace ElectoralRegisterResidentInformationApi.V1.Gateways
 {
-    public interface IElectoralRegisterResidentInformationApiGateway
+    public interface IElectoralRegisterGateway
     {
         Entity GetEntityById(int id);
 

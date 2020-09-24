@@ -10,15 +10,15 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.Gateways
     //TODO: Rename Tests to match gateway name
     //For instruction on how to run tests please see the wiki: https://github.com/LBHackney-IT/lbh-base-api/wiki/Running-the-test-suite.
     [TestFixture]
-    public class ElectoralRegisterResidentInformationApiGatewayTests : DatabaseTests
+    public class ElectoralRegisterGatewayTests : DatabaseTests
     {
         private readonly Fixture _fixture = new Fixture();
-        private ElectoralRegisterResidentInformationApiGateway _classUnderTest;
+        private ElectoralRegisterGateway _classUnderTest;
 
         [SetUp]
         public void Setup()
         {
-            _classUnderTest = new ElectoralRegisterResidentInformationApiGateway(DatabaseContext);
+            _classUnderTest = new ElectoralRegisterGateway(DatabaseContext);
         }
 
         [Test]

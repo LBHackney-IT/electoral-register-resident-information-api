@@ -6,11 +6,11 @@ using ElectoralRegisterResidentInformationApi.V1.Infrastructure;
 namespace ElectoralRegisterResidentInformationApi.V1.Gateways
 {
     //TODO: Rename to match the data source that is being accessed in the gateway eg. MosaicGateway
-    public class ElectoralRegisterResidentInformationApiGateway : IElectoralRegisterResidentInformationApiGateway
+    public class ElectoralRegisterGateway : IElectoralRegisterGateway
     {
         private readonly DatabaseContext _databaseContext;
 
-        public ElectoralRegisterResidentInformationApiGateway(DatabaseContext databaseContext)
+        public ElectoralRegisterGateway(DatabaseContext databaseContext)
         {
             _databaseContext = databaseContext;
         }
