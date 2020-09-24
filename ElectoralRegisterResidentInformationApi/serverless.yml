@@ -23,7 +23,7 @@ functions:
     handler: ElectoralRegisterResidentInformationApi::ElectoralRegisterResidentInformationApi.LambdaEntryPoint::FunctionHandlerAsync
     role: lambdaExecutionRole
     environment:
-      CONNECTION_STRING: Host=${ssm:/electoral-register-resident-information-api/${self:provider.stage}/postgres-hostname};Port=${ssm:/electoral-register-resident-information-api/${self:provider.stage}/postgres-port};Database=electoral-register-resident-information-api-mirror;Username=${ssm:/electoral-register-resident-information-api/${self:provider.stage}/postgres-username};Password=${ssm:/electoral-register-resident-information-api/${self:provider.stage}/postgres-password}
+      CONNECTION_STRING: Host=${ssm:/electoral-register-api/${self:provider.stage}/postgres-hostname};Port=${ssm:/electoral-register-api/${self:provider.stage}/postgres-port};Database=electoral_register_mirror;Username=${ssm:/electoral-register-api/${self:provider.stage}/postgres-username};Password=${ssm:/electoral-register-api/${self:provider.stage}/postgres-password}
     events:
       - http:
           path: /{proxy+}
