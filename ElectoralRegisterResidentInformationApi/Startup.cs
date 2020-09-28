@@ -113,7 +113,7 @@ namespace ElectoralRegisterResidentInformationApi
         {
             var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 
-            services.AddDbContext<DatabaseContext>(
+            services.AddDbContext<ElectoralRegisterContext>(
                 opt => opt.UseNpgsql(connectionString));
         }
 

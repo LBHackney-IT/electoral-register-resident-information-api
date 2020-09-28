@@ -18,7 +18,7 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.Gateways
         [SetUp]
         public void Setup()
         {
-            _classUnderTest = new ElectoralRegisterGateway(DatabaseContext);
+            _classUnderTest = new ElectoralRegisterGateway(ElectoralRegisterContext);
         }
 
         [Test]
@@ -35,8 +35,8 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.Gateways
             var entity = _fixture.Create<Resident>();
             var databaseEntity = DatabaseEntityHelper.CreateDatabaseEntityFrom(entity);
 
-            DatabaseContext.DatabaseEntities.Add(databaseEntity);
-            DatabaseContext.SaveChanges();
+            ElectoralRegisterContext.Electors.Add(databaseEntity);
+            ElectoralRegisterContext.SaveChanges();
 
             var response = _classUnderTest.GetEntityById(databaseEntity.Id);
 
