@@ -8,13 +8,13 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.UseCase
     public class GetByIdUseCaseTests
     {
         private Mock<IElectoralRegisterGateway> _mockGateway;
-        private GetByIdUseCase _classUnderTest;
+        private GetResidentByIdUseCase _classUnderTest;
 
         [SetUp]
         public void SetUp()
         {
             _mockGateway = new Mock<IElectoralRegisterGateway>();
-            _classUnderTest = new GetByIdUseCase(_mockGateway.Object);
+            _classUnderTest = new GetResidentByIdUseCase(_mockGateway.Object);
         }
 
         //TODO: test to check that the use case retrieves the correct record from the database.

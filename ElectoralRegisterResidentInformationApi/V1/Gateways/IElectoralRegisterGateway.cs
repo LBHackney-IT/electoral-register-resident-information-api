@@ -5,8 +5,8 @@ namespace ElectoralRegisterResidentInformationApi.V1.Gateways
 {
     public interface IElectoralRegisterGateway
     {
-        Entity GetEntityById(int id);
+        Resident GetEntityById(int id);
 
-        List<Entity> GetAll();
+        List<Resident> GetAll();
     }
 }

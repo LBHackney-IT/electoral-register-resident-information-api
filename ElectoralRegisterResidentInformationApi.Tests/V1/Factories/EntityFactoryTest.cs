@@ -17,7 +17,6 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.Factories
             var entity = databaseEntity.ToDomain();
 
             databaseEntity.Id.Should().Be(entity.Id);
-            databaseEntity.CreatedAt.Should().BeSameDateAs(entity.CreatedAt);
         }
     }
 }
