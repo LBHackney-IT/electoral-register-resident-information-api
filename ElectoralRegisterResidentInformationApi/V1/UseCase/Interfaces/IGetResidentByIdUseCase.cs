@@ -2,8 +2,8 @@ using ElectoralRegisterResidentInformationApi.V1.Boundary.Response;
 
 namespace ElectoralRegisterResidentInformationApi.V1.UseCase.Interfaces
 {
-    public interface IGetByIdUseCase
+    public interface IGetResidentByIdUseCase
     {
-        ResponseObject Execute(int id);
+        ResidentResponse Execute(int id);
     }
 }

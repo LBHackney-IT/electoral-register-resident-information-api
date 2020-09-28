@@ -1,14 +1,9 @@
 # LBH Electoral Register Resident Information API
 
-
 ## Stack
 
 - .NET Core as a web framework.
 - nUnit as a test framework.
-
-## Dependencies
-
-- Universal Housing Simulator
 
 ## Contributing
 
@@ -20,27 +15,6 @@
 4. Rename the initial template.
 5. Open it in your IDE.
 
-### Renaming
-
-The renaming of `base-api` into `SomethingElseApi` can be done by running a Renamer powershell script. To do so:
-1. Open the powershell and navigate to this directory's root.
-2. Run the script using the following command:
-```
-.\Renamer.ps1 -apiName My_Api
-```
-
-If your ***script execution policy*** prevents you from running the script, you can temporarily ***bypass*** that with:
-```
-powershell -noprofile -ExecutionPolicy Bypass -file .\Renamer.ps1 -apiName My_Api
-```
-
-Or you can change your execution policy, prior to running the script, permanently with _(this disables security so, be cautious)_:
-```
-Set-ExecutionPolicy Unrestricted
-```
-
-After the renaming is done, the ***script will ask you if you want to delete it as well***, as it's useless now - It's your choice.
-
 ### Development
 
 To serve the application, run it using your IDE of choice, we use Visual Studio CE and JetBrains Rider on Mac.
@@ -50,11 +24,7 @@ The application can also be served locally using docker:
 ```sh
 $ aws configure
 ```
-2. Log into AWS ECR.
-```sh
-$ aws ecr get-login --no-include-email
-```
-3. Build and serve the application. It will be available in the port 3000.
+2. Build and serve the application. It will be available in the port 3000.
 ```sh
 $ make build && make serve
 ```
@@ -143,6 +113,5 @@ If changes to the database schema are made then the docker image for the databas
 - **Rashmi Shetty**, Product Owner at London Borough of Hackney (rashmi.shetty@hackney.gov.uk)
 
 [docker-download]: https://www.docker.com/products/docker-desktop
-[universal-housing-simulator]: https://github.com/LBHackney-IT/lbh-universal-housing-simulator
 [made-tech]: https://madetech.com/
 [AWS-CLI]: https://aws.amazon.com/cli/

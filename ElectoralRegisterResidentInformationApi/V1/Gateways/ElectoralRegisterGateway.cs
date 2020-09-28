@@ -15,16 +15,16 @@ namespace ElectoralRegisterResidentInformationApi.V1.Gateways
             _databaseContext = databaseContext;
         }
 
-        public Entity GetEntityById(int id)
+        public Resident GetEntityById(int id)
         {
             var result = _databaseContext.DatabaseEntities.Find(id);
 
             return result?.ToDomain();
         }
 
-        public List<Entity> GetAll()
+        public List<Resident> GetAll()
         {
-            return new List<Entity>();
+            return new List<Resident>();
         }
     }
 }
