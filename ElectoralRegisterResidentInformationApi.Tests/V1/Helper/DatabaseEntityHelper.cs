@@ -6,16 +6,16 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.Helper
 {
     public static class DatabaseEntityHelper
     {
-        public static DatabaseEntity CreateDatabaseEntity()
+        public static Elector CreateDatabaseEntity()
         {
             var entity = new Fixture().Create<Resident>();
 
             return CreateDatabaseEntityFrom(entity);
         }
 
-        public static DatabaseEntity CreateDatabaseEntityFrom(Resident resident)
+        public static Elector CreateDatabaseEntityFrom(Resident resident)
         {
-            return new DatabaseEntity
+            return new Elector
             {
                 Id = resident.Id,
             };

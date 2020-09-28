@@ -8,16 +8,16 @@ namespace ElectoralRegisterResidentInformationApi.V1.Gateways
     //TODO: Rename to match the data source that is being accessed in the gateway eg. MosaicGateway
     public class ElectoralRegisterGateway : IElectoralRegisterGateway
     {
-        private readonly DatabaseContext _databaseContext;
+        private readonly ElectoralRegisterContext _electoralRegisterContext;
 
-        public ElectoralRegisterGateway(DatabaseContext databaseContext)
+        public ElectoralRegisterGateway(ElectoralRegisterContext electoralRegisterContext)
         {
-            _databaseContext = databaseContext;
+            _electoralRegisterContext = electoralRegisterContext;
         }
 
         public Resident GetEntityById(int id)
         {
-            var result = _databaseContext.DatabaseEntities.Find(id);
+            var result = _electoralRegisterContext.Electors.Find(id);
 
             return result?.ToDomain();
         }

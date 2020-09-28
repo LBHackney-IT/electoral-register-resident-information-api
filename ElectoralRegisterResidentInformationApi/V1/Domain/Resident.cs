@@ -12,6 +12,6 @@ namespace ElectoralRegisterResidentInformationApi.V1.Domain
         public DateTime DateOfBirth { get; set; }
         public string Email { get; set; }
         public string Nationality { get; set; }
-        public int Uprn { get; set; }
+        public int? Uprn { get; set; }
     }
 }

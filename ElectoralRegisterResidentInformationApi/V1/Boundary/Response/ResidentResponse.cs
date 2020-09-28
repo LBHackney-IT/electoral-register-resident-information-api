@@ -4,7 +4,7 @@ namespace ElectoralRegisterResidentInformationApi.V1.Boundary.Response
     {
         /// <example>33798</example>
         public int Id { get; set; }
-        /// <example>"Ms"</example>
+        /// <example>Ms</example>
         public string Title { get; set; }
         /// <example>Sarah</example>
         public string FirstName { get; set; }
@@ -19,6 +19,6 @@ namespace ElectoralRegisterResidentInformationApi.V1.Boundary.Response
         /// <example>British</example>
         public string Nationality { get; set; }
         /// <example>2646214</example>
-        public int Uprn { get; set; }
+        public int? Uprn { get; set; }
     }
 }
