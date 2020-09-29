@@ -1,4 +1,5 @@
 using ElectoralRegisterResidentInformationApi.V1.Boundary.Response;
+using ElectoralRegisterResidentInformationApi.V1.Domain;
 using ElectoralRegisterResidentInformationApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -43,7 +44,14 @@ namespace ElectoralRegisterResidentInformationApi.V1.Controllers
         [Route("{id}")]
         public IActionResult ViewRecord(int id)
         {
-            return Ok(_getResidentByIdUseCase.Execute(id));
+            try
+            {
+                return Ok(_getResidentByIdUseCase.Execute(id));
+            }
+            catch (ResidentNotFoundException)
+            {
+                return NotFound("No record could be found for the provided ID");
+            }
         }
     }
 }

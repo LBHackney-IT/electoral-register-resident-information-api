@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using ElectoralRegisterResidentInformationApi.V1.Domain;
 using ElectoralRegisterResidentInformationApi.V1.Factories;
 using ElectoralRegisterResidentInformationApi.V1.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace ElectoralRegisterResidentInformationApi.V1.Gateways
 {
-    //TODO: Rename to match the data source that is being accessed in the gateway eg. MosaicGateway
     public class ElectoralRegisterGateway : IElectoralRegisterGateway
     {
         private readonly ElectoralRegisterContext _electoralRegisterContext;
@@ -17,9 +18,10 @@ namespace ElectoralRegisterResidentInformationApi.V1.Gateways
 
         public Resident GetEntityById(int id)
         {
-            var result = _electoralRegisterContext.Electors.Find(id);
-
-            return result?.ToDomain();
+            return _electoralRegisterContext.Electors
+                .Include(e => e.ElectorExtension)
+                .Include(e => e.ElectorsProperty)
+                .FirstOrDefault(e => e.Id == id)?.ToDomain();
         }
 
         public List<Resident> GetAll()

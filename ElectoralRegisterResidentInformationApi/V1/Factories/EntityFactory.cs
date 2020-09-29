@@ -17,15 +17,9 @@ namespace ElectoralRegisterResidentInformationApi.V1.Factories
                 Uprn = elector.ElectorsProperty?.Uprn != null ? Convert.ToInt32(elector.ElectorsProperty?.Uprn) : (int?) null,
                 FirstName = elector.FirstName,
                 LastName = elector.LastName,
+                MiddleName = elector.ElectorExtension?.MiddleName,
+                DateOfBirth = elector.ElectorExtension?.DateOfBirth
             };
-        }
-
-        public static Resident ToDomain(this ElectorExtension electorExtension)
-        {
-            var resident = electorExtension.Elector != null ? electorExtension.Elector.ToDomain() : new Resident();
-            resident.DateOfBirth = electorExtension.DateOfBirth;
-            resident.MiddleName = electorExtension.MiddleName;
-            return resident;
         }
     }
 }

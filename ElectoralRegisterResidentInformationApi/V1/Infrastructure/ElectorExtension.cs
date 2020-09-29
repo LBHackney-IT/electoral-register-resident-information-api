@@ -10,17 +10,28 @@ namespace ElectoralRegisterResidentInformationApi.V1.Infrastructure
         [Column("Id")]
         public int Id { get; set; }
 
-        [Column("sysElectorId")]
-        public int ElectorId { get; set; }
-
-        [ForeignKey("ElectorId")]
-        public Elector Elector { get; set; }
-
         [Column("MiddleName")]
         [MaxLength(200)]
         public string MiddleName { get; set; }
 
         [Column("DOB")]
         public DateTime DateOfBirth { get; set; }
+
+        [Column("NINOPassword")]
+        [MaxLength(512)]
+        public string NinoPassword { get; set; }
+
+        [Column("ITRSourceID")]
+        public int ItrSourceId { get; set; }
+
+        [Column("RAG")]
+        [MaxLength(1)]
+        public string Rag { get; set; }
+
+        [Column("DeceasedEvidenceAcknowledgement")]
+        public bool DeceasedEvidenceAcknowledgement { get; set; }
+
+        [Column("UnsubscribeEmail")]
+        public bool UnsubscribeEmail { get; set; }
     }
 }

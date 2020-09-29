@@ -9,6 +9,9 @@ namespace ElectoralRegisterResidentInformationApi.V1.Infrastructure
         [Column("Id")]
         public int Id { get; set; }
 
+        [ForeignKey("Id")]
+        public ElectorExtension ElectorExtension { get; set; }
+
         [Column("ElectorForename")]
         [MaxLength(50)]
         public string FirstName { get; set; }

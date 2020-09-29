@@ -50,37 +50,21 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.Factories
         }
 
         [Test]
-        public void CanMapAnElectorExtensionWithElectorAttachedToResidentDomain()
+        public void CanMapAnElectorWithAttachedElectorExtensionToResidentDomain()
         {
-            var electorExtension = new ElectorExtension
+            var electorExtension = new Elector
             {
                 Id = 83,
-                MiddleName = "John",
-                DateOfBirth = new DateTime(2001, 04, 05),
-                Elector = new Elector
+                ElectorExtension = new ElectorExtension
                 {
                     Id = 77,
-                    Email = "contact-me@my-email.co.uk",
-                    Nationality = "Russian",
-                    Title = "Prof.",
-                    FirstName = "Green",
-                    LastName = "White",
-                    ElectorsProperty = new ElectorsProperty
-                    {
-                        Id = 88,
-                        Uprn = "9842274",
-                    }
+                    MiddleName = "John",
+                    DateOfBirth = new DateTime(2001, 04, 05)
                 }
             };
             var resident = electorExtension.ToDomain();
 
-            resident.Id.Should().Be(77);
-            resident.Email.Should().Be("contact-me@my-email.co.uk");
-            resident.Nationality.Should().Be("Russian");
-            resident.Title.Should().Be("Prof.");
-            resident.FirstName.Should().Be("Green");
-            resident.LastName.Should().Be("White");
-            resident.Uprn.Should().Be(9842274);
+            resident.Id.Should().Be(83);
             resident.MiddleName.Should().Be("John");
             resident.DateOfBirth.Should().Be(new DateTime(2001, 04, 05));
         }
