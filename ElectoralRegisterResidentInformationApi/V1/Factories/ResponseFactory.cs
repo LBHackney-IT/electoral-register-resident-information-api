@@ -17,7 +17,7 @@ namespace ElectoralRegisterResidentInformationApi.V1.Factories
                 MiddleName = resident.MiddleName,
                 LastName = resident.LastName,
                 Nationality = resident.Nationality,
-                DateOfBirth = resident.DateOfBirth.ToString("yyyy-MM-dd"),
+                DateOfBirth = resident.DateOfBirth?.ToString("yyyy-MM-dd"),
                 Email = resident.Email,
                 Uprn = resident.Uprn
             };

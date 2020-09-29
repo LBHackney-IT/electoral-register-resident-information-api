@@ -1,14 +1,13 @@
+using System;
 using AutoFixture;
-using ElectoralRegisterResidentInformationApi.Tests.V1.Helper;
 using ElectoralRegisterResidentInformationApi.V1.Domain;
 using ElectoralRegisterResidentInformationApi.V1.Gateways;
+using ElectoralRegisterResidentInformationApi.V1.Infrastructure;
 using FluentAssertions;
 using NUnit.Framework;
 
 namespace ElectoralRegisterResidentInformationApi.Tests.V1.Gateways
 {
-    //TODO: Rename Tests to match gateway name
-    //For instruction on how to run tests please see the wiki: https://github.com/LBHackney-IT/lbh-base-api/wiki/Running-the-test-suite.
     [TestFixture]
     public class ElectoralRegisterGatewayTests : DatabaseTests
     {
@@ -22,7 +21,7 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.Gateways
         }
 
         [Test]
-        public void GetEntityByIdReturnsNullIfEntityDoesntExist()
+        public void GetResidentByIdReturnsNullIfResidentDoesntExist()
         {
             var response = _classUnderTest.GetEntityById(123);
 
@@ -30,19 +29,48 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.Gateways
         }
 
         [Test]
-        public void GetEntityByIdReturnsTheEntityIfItExists()
+        public void GetResidentByIdReturnsTheResidentIfFound()
         {
-            var entity = _fixture.Create<Resident>();
-            var databaseEntity = DatabaseEntityHelper.CreateDatabaseEntityFrom(entity);
+            var (elector, electorExtension, property) = SaveElectorAndAssociatedEntitiesToDatabase();
 
-            ElectoralRegisterContext.Electors.Add(databaseEntity);
-            ElectoralRegisterContext.SaveChanges();
+            var response = _classUnderTest.GetEntityById(elector.Id);
 
-            var response = _classUnderTest.GetEntityById(databaseEntity.Id);
-
-            databaseEntity.Id.Should().Be(response.Id);
+            response.Id.Should().Be(elector.Id);
+            response.Should().BeEquivalentTo(new Resident
+            {
+                Id = elector.Id,
+                Email = elector.Email,
+                Nationality = elector.Nationality,
+                Title = elector.Title,
+                Uprn = Convert.ToInt32(property.Uprn),
+                FirstName = elector.FirstName,
+                MiddleName = electorExtension.MiddleName,
+                LastName = elector.LastName,
+                DateOfBirth = electorExtension.DateOfBirth
+            });
         }
 
-        //TODO: Add tests here for the get all method.
+        private (Elector elector, ElectorExtension electorExtension, ElectorsProperty property) SaveElectorAndAssociatedEntitiesToDatabase()
+        {
+            var property = _fixture.Build<ElectorsProperty>()
+                .With(e => e.Uprn, _fixture.Create<int>().ToString).Create();
+            ElectoralRegisterContext.Properties.Add(property);
+            ElectoralRegisterContext.SaveChanges();
+
+            var elector = _fixture.Build<Elector>()
+                .Without(e => e.ElectorsProperty)
+                .Without(e => e.ElectorExtension)
+                .With(e => e.PropertyId, property.Id)
+                .Create();
+            ElectoralRegisterContext.Electors.Add(elector);
+            ElectoralRegisterContext.SaveChanges();
+
+            var electorExtension = _fixture.Build<ElectorExtension>()
+                .With(e => e.Id, elector.Id)
+                .Create();
+            ElectoralRegisterContext.ElectorExtensions.Add(electorExtension);
+            ElectoralRegisterContext.SaveChanges();
+            return (elector, electorExtension, property);
+        }
     }
 }
