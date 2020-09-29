@@ -7,6 +7,6 @@ namespace ElectoralRegisterResidentInformationApi.V1.Gateways
     {
         Resident GetEntityById(int id);
 
-        List<Resident> GetAll();
+        List<Resident> GetAllResidents();
     }
 }
