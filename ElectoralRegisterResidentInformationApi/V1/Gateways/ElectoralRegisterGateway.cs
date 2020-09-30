@@ -24,9 +24,12 @@ namespace ElectoralRegisterResidentInformationApi.V1.Gateways
                 .FirstOrDefault(e => e.Id == id)?.ToDomain();
         }
 
-        public List<Resident> GetAll()
+        public List<Resident> GetAllResidents()
         {
-            return new List<Resident>();
+            return _electoralRegisterContext.Electors
+                .Include(e => e.ElectorExtension)
+                .Include(e => e.ElectorsProperty)
+                .ToList().ToDomain();
         }
     }
 }

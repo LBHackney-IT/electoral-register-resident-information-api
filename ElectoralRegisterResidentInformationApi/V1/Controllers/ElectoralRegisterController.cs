@@ -12,25 +12,24 @@ namespace ElectoralRegisterResidentInformationApi.V1.Controllers
     [ApiVersion("1.0")]
     public class ElectoralRegisterController : BaseController
     {
-        private readonly IGetAllUseCase _getAllUseCase;
+        private readonly IGetAllResidentsUseCase _getAllResidentsUseCase;
         private readonly IGetResidentByIdUseCase _getResidentByIdUseCase;
-        public ElectoralRegisterController(IGetAllUseCase getAllUseCase, IGetResidentByIdUseCase getResidentByIdUseCase)
+        public ElectoralRegisterController(IGetAllResidentsUseCase getAllResidentsUseCase, IGetResidentByIdUseCase getResidentByIdUseCase)
         {
-            _getAllUseCase = getAllUseCase;
+            _getAllResidentsUseCase = getAllResidentsUseCase;
             _getResidentByIdUseCase = getResidentByIdUseCase;
         }
 
-        //TODO: add xml comments containing information that will be included in the auto generated swagger docs (https://github.com/LBHackney-IT/lbh-base-api/wiki/Controllers-and-Response-Objects)
         /// <summary>
-        /// ...
+        /// Searches residents in the electoral registers.
         /// </summary>
-        /// <response code="200">...</response>
+        /// <response code="200">Residents results matching search criteria.</response>
         /// <response code="400">Invalid Query Parameter.</response>
-        [ProducesResponseType(typeof(ResponseObjectList), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResidentInformationList), StatusCodes.Status200OK)]
         [HttpGet]
-        public IActionResult ListContacts()
+        public IActionResult ListResidents()
         {
-            return Ok(_getAllUseCase.Execute());
+            return Ok(_getAllResidentsUseCase.Execute());
         }
 
         /// <summary>

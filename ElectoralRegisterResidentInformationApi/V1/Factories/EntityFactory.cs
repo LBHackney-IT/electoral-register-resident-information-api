@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using ElectoralRegisterResidentInformationApi.V1.Domain;
 using ElectoralRegisterResidentInformationApi.V1.Infrastructure;
 
@@ -20,6 +22,11 @@ namespace ElectoralRegisterResidentInformationApi.V1.Factories
                 MiddleName = elector.ElectorExtension?.MiddleName,
                 DateOfBirth = elector.ElectorExtension?.DateOfBirth
             };
+        }
+
+        public static List<Resident> ToDomain(this IEnumerable<Elector> electors)
+        {
+            return electors.Select(p => p.ToDomain()).ToList();
         }
     }
 }

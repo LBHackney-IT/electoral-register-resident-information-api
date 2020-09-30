@@ -10,7 +10,7 @@ namespace ElectoralRegisterResidentInformationApi.Tests
     public class IntegrationTests<TStartup> where TStartup : class
     {
         protected HttpClient Client { get; private set; }
-        protected ElectoralRegisterContext ElectoralRegisterContext { get; private set; }
+        protected static ElectoralRegisterContext ElectoralRegisterContext { get; private set; }
 
         private MockWebApplicationFactory<TStartup> _factory;
         private NpgsqlConnection _connection;

@@ -1,6 +1,5 @@
 using System.Linq;
 using AutoFixture;
-using ElectoralRegisterResidentInformationApi.V1.Boundary.Response;
 using ElectoralRegisterResidentInformationApi.V1.Domain;
 using ElectoralRegisterResidentInformationApi.V1.Factories;
 using ElectoralRegisterResidentInformationApi.V1.Gateways;
@@ -14,28 +13,27 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.UseCase
     public class GetAllUseCaseTests
     {
         private Mock<IElectoralRegisterGateway> _mockGateway;
-        private GetAllUseCase _classUnderTest;
+        private GetAllResidentsUseCase _classUnderTest;
         private Fixture _fixture;
 
         [SetUp]
         public void SetUp()
         {
             _mockGateway = new Mock<IElectoralRegisterGateway>();
-            _classUnderTest = new GetAllUseCase(_mockGateway.Object);
+            _classUnderTest = new GetAllResidentsUseCase(_mockGateway.Object);
             _fixture = new Fixture();
         }
 
         [Test]
-        public void GetsAllFromTheGateway()
+        public void ReturnsResidentInformationList()
         {
-            var stubbedEntities = _fixture.CreateMany<Resident>().ToList();
-            _mockGateway.Setup(x => x.GetAll()).Returns(stubbedEntities);
+            var stubbedResidents = _fixture.CreateMany<Resident>().ToList();
+            _mockGateway.Setup(x => x.GetAllResidents()).Returns(stubbedResidents);
 
-            var expectedResponse = new ResponseObjectList { ResponseObjects = stubbedEntities.ToResponse() };
+            var response = _classUnderTest.Execute();
 
-            _classUnderTest.Execute().Should().BeEquivalentTo(expectedResponse);
+            response.Should().NotBeNull();
+            response.Residents.Should().BeEquivalentTo(stubbedResidents.ToResponse());
         }
-
-        //TODO: Add extra tests here for extra functionality added to the use case
     }
 }
