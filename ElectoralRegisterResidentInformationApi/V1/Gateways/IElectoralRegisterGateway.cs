@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ElectoralRegisterResidentInformationApi.V1.Boundary.Request;
 using ElectoralRegisterResidentInformationApi.V1.Domain;
 
 namespace ElectoralRegisterResidentInformationApi.V1.Gateways
@@ -7,6 +8,6 @@ namespace ElectoralRegisterResidentInformationApi.V1.Gateways
     {
         Resident GetEntityById(int id);
 
-        List<Resident> GetAllResidents();
+        List<Resident> GetAllResidents(ListResidentsRequest request);
     }
 }

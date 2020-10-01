@@ -9,26 +9,30 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.E2ETests
     {
         private static readonly IFixture _fixture = new Fixture();
 
-        public static ResidentResponse SaveResidentsElectorRecordsToTheDatabase()
+        public static ResidentResponse SaveResidentsElectorRecordsToTheDatabase(ElectoralRegisterContext context, string firstName = null, string lastName = null, int id = 0)
         {
             var property = _fixture.Build<ElectorsProperty>()
                 .With(e => e.Uprn, _fixture.Create<int>().ToString).Create();
-            ElectoralRegisterContext.Properties.Add(property);
-            ElectoralRegisterContext.SaveChanges();
+            context.Properties.Add(property);
+            context.SaveChanges();
 
             var elector = _fixture.Build<Elector>()
                 .Without(e => e.ElectorsProperty)
                 .Without(e => e.ElectorExtension)
                 .With(e => e.PropertyId, property.Id)
                 .Create();
-            ElectoralRegisterContext.Electors.Add(elector);
-            ElectoralRegisterContext.SaveChanges();
+            elector.FirstName = firstName ?? elector.FirstName;
+            elector.LastName = lastName ?? elector.LastName;
+            if (id != 0) { elector.Id = id; }
+
+            context.Electors.Add(elector);
+            context.SaveChanges();
 
             var electorExtension = _fixture.Build<ElectorExtension>()
                 .With(e => e.Id, elector.Id)
                 .Create();
-            ElectoralRegisterContext.ElectorExtensions.Add(electorExtension);
-            ElectoralRegisterContext.SaveChanges();
+            context.ElectorExtensions.Add(electorExtension);
+            context.SaveChanges();
 
             var expectedResponse = new ResidentResponse
             {

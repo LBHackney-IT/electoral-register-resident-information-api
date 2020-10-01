@@ -1,3 +1,4 @@
+using ElectoralRegisterResidentInformationApi.V1.Boundary.Request;
 using ElectoralRegisterResidentInformationApi.V1.Boundary.Response;
 using ElectoralRegisterResidentInformationApi.V1.Domain;
 using ElectoralRegisterResidentInformationApi.V1.UseCase.Interfaces;
@@ -27,9 +28,9 @@ namespace ElectoralRegisterResidentInformationApi.V1.Controllers
         /// <response code="400">Invalid Query Parameter.</response>
         [ProducesResponseType(typeof(ResidentInformationList), StatusCodes.Status200OK)]
         [HttpGet]
-        public IActionResult ListResidents()
+        public IActionResult ListResidents([FromQuery] ListResidentsRequest request)
         {
-            return Ok(_getAllResidentsUseCase.Execute());
+            return Ok(_getAllResidentsUseCase.Execute(request));
         }
 
         /// <summary>

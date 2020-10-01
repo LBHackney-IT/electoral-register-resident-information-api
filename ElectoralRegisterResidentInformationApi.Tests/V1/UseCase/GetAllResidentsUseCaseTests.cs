@@ -4,6 +4,7 @@ using ElectoralRegisterResidentInformationApi.V1.Domain;
 using ElectoralRegisterResidentInformationApi.V1.Factories;
 using ElectoralRegisterResidentInformationApi.V1.Gateways;
 using ElectoralRegisterResidentInformationApi.V1.UseCase;
+using ElectoralRegisterResidentInformationApi.V1.Boundary.Request;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -28,9 +29,11 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.UseCase
         public void ReturnsResidentInformationList()
         {
             var stubbedResidents = _fixture.CreateMany<Resident>().ToList();
-            _mockGateway.Setup(x => x.GetAllResidents()).Returns(stubbedResidents);
+            var request = _fixture.Create<ListResidentsRequest>();
 
-            var response = _classUnderTest.Execute();
+            _mockGateway.Setup(x => x.GetAllResidents(request)).Returns(stubbedResidents);
+
+            var response = _classUnderTest.Execute(request);
 
             response.Should().NotBeNull();
             response.Residents.Should().BeEquivalentTo(stubbedResidents.ToResponse());
