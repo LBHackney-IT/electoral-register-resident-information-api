@@ -4,8 +4,10 @@ using AutoFixture;
 using ElectoralRegisterResidentInformationApi.V1.Domain;
 using ElectoralRegisterResidentInformationApi.V1.Gateways;
 using ElectoralRegisterResidentInformationApi.V1.Infrastructure;
+using ElectoralRegisterResidentInformationApi.V1.Boundary.Request;
 using FluentAssertions;
 using NUnit.Framework;
+using Bogus;
 
 namespace ElectoralRegisterResidentInformationApi.Tests.V1.Gateways
 {
@@ -14,6 +16,7 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.Gateways
     {
         private readonly Fixture _fixture = new Fixture();
         private ElectoralRegisterGateway _classUnderTest;
+        private readonly Faker _faker = new Faker();
 
         [SetUp]
         public void Setup()
@@ -54,7 +57,7 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.Gateways
         [Test]
         public void GetAllResidentsIfThereAreNoResidentsReturnsAnEmptyList()
         {
-            var response = _classUnderTest.GetAllResidents();
+            var response = _classUnderTest.GetAllResidents(new ListResidentsRequest());
 
             response.Should().BeEmpty();
         }
@@ -62,18 +65,21 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.Gateways
         [Test]
         public void GetAllResidentsWillRetrieveElectorRecordsAndRelatedData()
         {
-            var dateOfBirthForOne = new DateTime();
-            var dateOfBirthForTwo = new DateTime();
+            var dateOfBirthForOne = _faker.Date.Past();
+            var dateOfBirthForTwo = _faker.Date.Past();
+            var firstName = _faker.Person.FirstName;
+            var (electorOne, electorExtensionOne, propertyOne) = SaveElectorAndAssociatedEntitiesToDatabase(dateOfBirthForOne, firstName, 1);
+            var (electorTwo, electorExtensionTwo, propertyTwo) = SaveElectorAndAssociatedEntitiesToDatabase(dateOfBirthForTwo, firstName, 2);
+            SaveElectorAndAssociatedEntitiesToDatabase(dateOfBirthForTwo); //add a resident to db that should not be returned
 
-            var (electorOne, electorExtensionOne, propertyOne) = SaveElectorAndAssociatedEntitiesToDatabase(dateOfBirthForOne);
-            var (electorTwo, electorExtensionTwo, propertyTwo) = SaveElectorAndAssociatedEntitiesToDatabase(dateOfBirthForTwo);
-
+            var request = new ListResidentsRequest() { FirstName = electorOne.FirstName };
             //---- Call gateway method
-            var listOfRecords = _classUnderTest.GetAllResidents();
+            var listOfRecords = _classUnderTest.GetAllResidents(request);
 
             var residentOne = listOfRecords.First();
             var residentTwo = listOfRecords.Last();
 
+            listOfRecords.Count.Should().Be(2);
             residentOne.Id.Should().Be(electorOne.Id);
 
             residentOne.Should().BeEquivalentTo(new Resident
@@ -105,7 +111,8 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.Gateways
             });
         }
 
-        private (Elector elector, ElectorExtension electorExtension, ElectorsProperty property) SaveElectorAndAssociatedEntitiesToDatabase(DateTime? birthdate = null)
+        private (Elector elector, ElectorExtension electorExtension, ElectorsProperty property) SaveElectorAndAssociatedEntitiesToDatabase(DateTime? birthdate = null,
+            string firstName = null, int id = 0)
         {
             var property = _fixture.Build<ElectorsProperty>()
                 .With(e => e.Uprn, _fixture.Create<int>().ToString).Create();
@@ -117,6 +124,9 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.Gateways
                 .Without(e => e.ElectorExtension)
                 .With(e => e.PropertyId, property.Id)
                 .Create();
+
+            elector.FirstName = firstName ?? elector.FirstName;
+            if (id != 0) { elector.Id = id; }
             ElectoralRegisterContext.Electors.Add(elector);
             ElectoralRegisterContext.SaveChanges();
 

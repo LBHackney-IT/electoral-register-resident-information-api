@@ -13,7 +13,7 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.E2ETests
         [Test]
         public async Task GetResidentByIdWillReturnResidentDetailsIfFound()
         {
-            var expectedResident = E2ETestHelpers.SaveResidentsElectorRecordsToTheDatabase();
+            var expectedResident = E2ETestHelpers.SaveResidentsElectorRecordsToTheDatabase(ElectoralRegisterContext);
             var response = await CallEndpointWithId(expectedResident.Id).ConfigureAwait(true);
             response.StatusCode.Should().Be(200);
 

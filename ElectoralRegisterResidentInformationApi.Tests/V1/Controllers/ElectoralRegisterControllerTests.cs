@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Bogus;
+using ElectoralRegisterResidentInformationApi.V1.Boundary.Request;
 using ElectoralRegisterResidentInformationApi.V1.Boundary.Response;
 using ElectoralRegisterResidentInformationApi.V1.Controllers;
 using ElectoralRegisterResidentInformationApi.V1.UseCase.Interfaces;
@@ -15,6 +17,7 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.Controllers
         private ElectoralRegisterController _classUnderTest;
         private Mock<IGetAllResidentsUseCase> _mockGetAllResidentsUseCase;
         private Mock<IGetResidentByIdUseCase> _mockGetResidentByIdUseCase;
+        private readonly Faker _faker = new Faker();
 
         [SetUp]
         public void SetUp()
@@ -32,11 +35,11 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.Controllers
             {
                 new ResidentResponse
                 {
-                    FirstName = "test",
-                    LastName = "test",
-                    DateOfBirth = "01/01/2020",
+                    FirstName = _faker.Name.FirstName(),
+                    LastName = _faker.Name.LastName(),
+                    DateOfBirth = _faker.Date.Past().ToString(),
                     Uprn = 1234,
-                    Email = "test@email.com"
+                    Email = _faker.Person.Email
                 }
             };
 
@@ -45,8 +48,14 @@ namespace ElectoralRegisterResidentInformationApi.Tests.V1.Controllers
                 Residents = residentInfo
             };
 
-            _mockGetAllResidentsUseCase.Setup(x => x.Execute()).Returns(residentInformationList);
-            var response = _classUnderTest.ListResidents() as OkObjectResult;
+            var request = new ListResidentsRequest()
+            {
+                FirstName = residentInfo[0].FirstName,
+                LastName = residentInfo[0].LastName
+            };
+
+            _mockGetAllResidentsUseCase.Setup(x => x.Execute(request)).Returns(residentInformationList);
+            var response = _classUnderTest.ListResidents(request) as OkObjectResult;
 
             response.Should().NotBeNull();
             response.StatusCode.Should().Be(200);
