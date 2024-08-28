@@ -126,7 +126,7 @@ jobs:
           stage: "production"
 
 workflows:      
-  check-and-deploy-staging-and-production:
+  remove-serverless-and-terraform-resources:
       jobs:
       - assume-role-development:
           context: api-assume-role-development-context
@@ -167,7 +167,7 @@ workflows:
           filters:
              branches:
                only: master
-      - permit-development-terraform-release:
+      - permit-staging-terraform-release:
           type: approval
           requires:
             - assume-role-staging
@@ -176,7 +176,7 @@ workflows:
               only: master
       - terraform-init-and-apply-to-staging:
           requires:
-            - permit-development-terraform-release
+            - permit-staging-terraform-release
           filters:
             branches:
               only: master
