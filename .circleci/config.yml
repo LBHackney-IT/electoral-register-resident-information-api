@@ -154,40 +154,45 @@ jobs:
       - deploy-lambda:
           stage: "production"
 
-workflows:
-  check-and-deploy-development:
-    jobs:
-      - check-code-formatting
-      - build-and-test
-      - assume-role-development:
-          context: api-assume-role-development-context
-          requires:
-            - build-and-test
-          filters:
-            branches:
-              only: development
-      - terraform-init-and-apply-to-development:
-          requires:
-            - assume-role-development
-          filters:
-            branches:
-              only: development
-      - deploy-to-development:
-          requires:
-            - assume-role-development
-          filters:
-            branches:
-              only: development
+workflows:      
   check-and-deploy-staging-and-production:
       jobs:
-      - build-and-test:
+      - assume-role-development:
+          context: api-assume-role-development-context
+          filters:
+            branches:
+              only: master
+      - permit-development-terraform-release:
+          type: approval
+          requires:
+            - assume-role-development
+          filters:
+            branches:
+              only: master
+      - terraform-init-and-apply-to-development:
+          requires:
+            - permit-development-terraform-release
+          filters:
+            branches:
+              only: master
+      - permit-development-serverless-release:
+          type: approval
+          requires:
+            - assume-role-development
+          filters:
+            branches:
+              only: master
+      - deploy-to-development:
+          requires:
+            - permit-development-serverless-release
           filters:
             branches:
               only: master
       - assume-role-staging:
           context: api-assume-role-staging-context
           requires:
-              - build-and-test
+              - deploy-to-development
+              - terraform-init-and-apply-to-development
           filters:
              branches:
                only: master
