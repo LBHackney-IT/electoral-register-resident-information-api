@@ -59,24 +59,3 @@ data "aws_ssm_parameter" "electoral_register_postgres_db_password" {
 data "aws_ssm_parameter" "electoral_register_postgres_username" {
   name = "/electoral-register-api/staging/postgres-username"
 }
-
-module "postgres_db_staging" {
-  source               = "github.com/LBHackney-IT/aws-hackney-common-terraform.git//modules/database/postgres"
-  environment_name     = "staging"
-  vpc_id               = data.aws_vpc.staging_vpc.id
-  db_identifier        = "electoral-register-mirror-db"
-  db_name              = "electoral_register_mirror"
-  db_port              = 5402
-  subnet_ids           = data.aws_subnet_ids.staging.ids
-  db_engine            = "postgres"
-  db_engine_version    = "11.1"
-  db_instance_class    = "db.t2.micro"
-  db_allocated_storage = 20
-  maintenance_window   = "sun:10:00-sun:10:30"
-  db_username          = data.aws_ssm_parameter.electoral_register_postgres_username.value
-  db_password          = data.aws_ssm_parameter.electoral_register_postgres_db_password.value
-  storage_encrypted    = false
-  multi_az             = false //only true if production deployment
-  publicly_accessible  = false
-  project_name         = "platform apis"
-}
