@@ -91,7 +91,7 @@ commands:
           name: Deploy lambda
           command: |
             cd ./ElectoralRegisterResidentInformationApi/
-            if [ "<<parameters.stage>>" = "staging" ]
+            if [ "<<parameters.stage>>" = "environment" ]
             then
               sls remove --stage <<parameters.stage>> --verbose
             else
@@ -99,41 +99,21 @@ commands:
             fi
 
 jobs:
-  assume-role-staging:
-    executor: docker-python
-    steps:
-      - assume-role-and-persist-workspace:
-          aws-account: $AWS_ACCOUNT_STAGING
   assume-role-production:
     executor: docker-python
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_PRODUCTION
-  terraform-init-and-apply-to-staging:
-    executor: docker-terraform
-    steps:
-      - terraform-init-then-apply:
-          environment: "staging"
   terraform-init-and-apply-to-production:
     executor: docker-terraform
     steps:
       - terraform-init-then-apply:
           environment: "production"
-  deploy-to-staging:
-    executor: docker-dotnet
-    steps:
-      - deploy-lambda:
-          stage: "staging"
   deploy-to-production:
     executor: docker-dotnet
     steps:
       - deploy-lambda:
           stage: "production"
-  terraform-preview-staging:
-    executor: docker-terraform
-    steps:
-      - terraform-preview:
-          environment: 'staging'
   terraform-preview-production:
     executor: docker-terraform
     steps:
