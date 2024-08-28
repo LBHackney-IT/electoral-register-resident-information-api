@@ -1,8 +1,6 @@
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@3.0.0
-  aws-cli: circleci/aws-cli@0.1.9
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
 
 executors:
@@ -81,27 +79,6 @@ commands:
             sls deploy --stage <<parameters.stage>> --conceal
 
 jobs:
-  check-code-formatting:
-    executor: docker-dotnet
-    steps:
-      - checkout
-      - run:
-          name: Install dotnet format
-          command: dotnet tool install dotnet-format --tool-path ./dotnet-format-local/
-      - run:
-          name: Run formatter check
-          command: ./dotnet-format-local/dotnet-format --dry-run --check
-  build-and-test:
-    executor: docker-python
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: build
-          command: docker-compose build electoral-register-resident-information-api-test
-      - run:
-          name: Run tests
-          command: docker-compose run electoral-register-resident-information-api-test
   assume-role-development:
     executor: docker-python
     steps:
