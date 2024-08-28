@@ -139,6 +139,21 @@ jobs:
     steps:
       - deploy-lambda:
           stage: "production"
+  terraform-preview-development:
+    executor: docker-terraform
+    steps:
+      - terraform-preview:
+          environment: 'development'
+  terraform-preview-staging:
+    executor: docker-terraform
+    steps:
+      - terraform-preview:
+          environment: 'staging'
+  terraform-preview-production:
+    executor: docker-terraform
+    steps:
+      - terraform-preview:
+          environment: 'production'
 
 workflows:      
   remove-serverless-and-terraform-resources:
