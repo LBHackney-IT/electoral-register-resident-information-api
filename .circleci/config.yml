@@ -55,6 +55,21 @@ commands:
           command: |
             cd ./terraform/<<parameters.environment>>/
             terraform apply -auto-approve
+  terraform-preview:
+    description: "Preview terraform configuration changes"
+    parameters:
+      environment:
+        type: string
+    steps:
+      - *attach_workspace
+      - checkout
+      - run:
+          command: |
+            cd ./terraform/<<parameters.environment>>/
+            terraform get -update=true
+            terraform init
+            terraform plan
+          name: terraform preview
   deploy-lambda:
     description: "Deploys API via Serverless"
     parameters:
@@ -124,8 +139,59 @@ jobs:
     steps:
       - deploy-lambda:
           stage: "production"
+  terraform-preview-development:
+    executor: docker-terraform
+    steps:
+      - terraform-preview:
+          environment: 'development'
+  terraform-preview-staging:
+    executor: docker-terraform
+    steps:
+      - terraform-preview:
+          environment: 'staging'
+  terraform-preview-production:
+    executor: docker-terraform
+    steps:
+      - terraform-preview:
+          environment: 'production'
 
-workflows:      
+workflows:   
+  preview-terraform-changes:
+    jobs:
+      - assume-role-development:
+          context: api-assume-role-development-context
+          filters:
+            branches:
+              ignore: master
+      - terraform-preview-development:
+          requires:
+            - assume-role-development
+          filters:
+            branches:
+              ignore: master
+      - assume-role-staging:
+          context: api-assume-role-staging-context
+          filters:
+             branches:
+               ignore: master
+      - terraform-preview-staging:
+          requires:
+            - assume-role-staging
+          filters:
+            branches:
+              ignore: master
+      - assume-role-production:
+          context: api-assume-role-production-context
+          filters:
+             branches:
+               ignore: master
+      - terraform-preview-production:
+          requires:
+            - assume-role-production
+          filters:
+            branches:
+              ignore: master
+
   remove-serverless-and-terraform-resources:
       jobs:
       - assume-role-development:
