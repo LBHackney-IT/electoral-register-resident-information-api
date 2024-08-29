@@ -91,7 +91,7 @@ commands:
           name: Deploy lambda
           command: |
             cd ./ElectoralRegisterResidentInformationApi/
-            if [ "<<parameters.stage>>" = "environment" ]
+            if [ "<<parameters.stage>>" = "production" ]
             then
               sls remove --stage <<parameters.stage>> --verbose
             else
