@@ -11,13 +11,6 @@ provider "aws" {
   region  = "eu-west-2"
   version = "~> 2.0"
 }
-data "aws_caller_identity" "current" {}
-
-data "aws_region" "current" {}
-
-locals {
-  parameter_store = "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter"
-}
 
 terraform {
   backend "s3" {
@@ -26,28 +19,4 @@ terraform {
     region  = "eu-west-2"
     key     = "services/electoral-register-information-api/state"
   }
-}
-
-/*    POSTGRES SET UP    */
-
-data "aws_vpc" "production_vpc" {
-  tags = {
-    Name = "vpc-production-apis-production"
-  }
-}
-
-data "aws_subnet_ids" "production" {
-  vpc_id = data.aws_vpc.production_vpc.id
-  filter {
-    name   = "tag:Type"
-    values = ["private"]
-  }
-}
-
-data "aws_ssm_parameter" "electoral_register_postgres_db_password" {
-  name = "/electoral-register-api/production/postgres-password"
-}
-
-data "aws_ssm_parameter" "electoral_register_postgres_username" {
-  name = "/electoral-register-api/production/postgres-username"
 }
