@@ -1,5 +1,8 @@
 # LBH Electoral Register Resident Information API
 
+This application and its resources have been decommissioned.
+
+<!--
 ## Stack
 
 - .NET Core as a web framework.
@@ -115,3 +118,4 @@ If changes to the database schema are made then the docker image for the databas
 [docker-download]: https://www.docker.com/products/docker-desktop
 [made-tech]: https://madetech.com/
 [AWS-CLI]: https://aws.amazon.com/cli/
+-->
